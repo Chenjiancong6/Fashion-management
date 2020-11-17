@@ -1,5 +1,11 @@
 # fashion-management
 
+# 潮流街APP后台管理系统
+```
+作者：陈健聪
+我的毕业设计
+```
+
 ## Project setup
 ```
 npm install
@@ -20,5 +26,3 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
