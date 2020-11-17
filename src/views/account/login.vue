@@ -3,7 +3,9 @@
     <div class="login_title">潮流街APP后台管理系统</div>
     <div class="login_content">
       <div class="login_left">
-        <div class="empty"></div>
+        <div class="empty">
+          <img src="../../assets/login.jpg" alt="" srcset="">
+        </div>
       </div>
       <!--登录  -->
       <div class="login_right">
@@ -60,12 +62,16 @@ export default {
     loginSubmit(formName) {
       // 为表单绑定验证功能
       this.$refs[formName].validate(valid => {
-        if (valid) {
-        
+        if (valid) { 
+          //api接口   
           this.$cloudApi.login({
-            username:this.loginForm.username,password:this.loginForm.password})
-              // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-        setTimeout(()=>{this.$router.replace("/home");},4000)
+            username:this.loginForm.username,password:this.loginForm.password
+            })
+              //获取账号和密码放在本地缓存
+           sessionStorage.setItem('username',this.loginForm.username)
+           sessionStorage.setItem('password',this.loginForm.password)
+         setTimeout(()=>{this.$router.replace("/home");},4000)
+        
          
         } else {
           return false;
@@ -117,6 +123,10 @@ export default {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   box-shadow: 0 0 25px rgb(163, 246, 163);
+}
+.empty img{
+   width: 100%;
+  height: 100%;
 }
 .login-box {
   display: flex;
