@@ -3,10 +3,9 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-const home = () =>
-    import ("@/views/home/Home");
-const login = () =>
-    import ("@/views/account/login");
+const home = () =>import ("@/views/home/Home");
+const login = () =>import ("@/views/account/login");
+const layout=()=>import ("@/components/layout/Layout")  //页面导航栏
 const routes = [{
         path: "/",
         redirect: "/home",
@@ -26,6 +25,13 @@ const routes = [{
         component: login,
         meta: {
             title: "登录",
+        }
+    },{
+        path:'/layout',
+        name:'Layout',
+        component:layout,
+        meta:{
+            title:'页面布局'
         }
     }
 ]

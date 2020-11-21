@@ -84,8 +84,8 @@ export default {
 
 <style>
 .login-container {
-  width: 80%;
-  height: 80%;
+  width: 70%;
+  height: 70%;
   position: absolute;
   left: 10%;
   top: 10%;
