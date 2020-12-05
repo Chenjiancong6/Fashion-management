@@ -1,9 +1,10 @@
 <template>
   <div class="LeftLayout">
-<el-row class="tac">
-  <el-col :span="12">
+<el-row class="tac" >
+  <el-col>
     <el-menu
       default-active="2"
+      background-color="#f0f0f0"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose">

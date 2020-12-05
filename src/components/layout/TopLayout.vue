@@ -3,8 +3,7 @@
     <div class="layout-left">
       <span>潮流街APP后台管理系统</span>
     </div>
-    <div class="layout-right">
-      
+    <div class="layout-right">   
         <el-popover
           placement="bottom-start"
           title="标题"
@@ -37,6 +36,7 @@ export default {
 <style scoped>
 .top-layout {
   /* display: flex; */
+  margin-right: 25px;
 }
 .layout-left {
   float: left;
