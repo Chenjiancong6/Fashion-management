@@ -4,21 +4,39 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const home = () =>import ("@/views/home/Home");
+const detail = () => import("@/views/detail/Detail");
 const login = () =>import ("@/views/account/login");
-const layout=()=>import ("@/components/layout/Layout")  //页面导航栏
-const routes = [{
-        path: "/",
-        redirect: "/home",
-    },
+const LayoutIndex =()=>import("@/components/layout/")
+const routes = [
     {
-        path: "/home",
-        name: "home",
-        component: home,
-        meta:{
-            title:'首页',
-            auth:true
-        }
+      path:'/',
+      redirect:'/index',
+      name:'LayoutIndex',
+      component:LayoutIndex,
+      //嵌套路由
+      children:[
+         {
+           path:"",
+           name:"home",
+           component:home
+         },
+          {
+              path: "/detail",
+              name: "detail",
+              component: detail
+          },
+        ] 
     },
+
+    // {
+    //     path: "/home",
+    //     name: "home",
+    //     component: home,
+    //     meta:{
+    //         title:'首页',
+    //         auth:true
+    //     }
+    // },
     {
         path: "/login",
         name: "Login",
@@ -26,14 +44,8 @@ const routes = [{
         meta: {
             title: "登录",
         }
-    },{
-        path:'/layout',
-        name:'Layout',
-        component:layout,
-        meta:{
-            title:'页面布局'
-        }
-    }
+    },
+   
 ]
 
 const router = new VueRouter({
