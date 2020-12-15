@@ -98,9 +98,7 @@ export default {
 </script>
 
 <style>
-.table{
-  /* margin-right: 300px; */
-}
+
 .demo-table-expand {
   font-size: 0;
 }
