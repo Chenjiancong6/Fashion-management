@@ -49,8 +49,8 @@ export default {
   }
 
   
-  .el-main {
+  /* .el-main {
     text-align: center;
     line-height: 160px;
-  }
+  } */
 </style>

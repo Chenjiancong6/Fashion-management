@@ -3,7 +3,7 @@
       <div>
         <i :class="{'el-icon-s-fold':isCollapse,
                     'el-icon-s-unfold':!isCollapse}"></i>
-       <span>潮流街APP后台管理系统</span>
+       <!-- <span>潮流街APP后台管理系统</span> -->
        </div>
       <div class="layout-right">   
         <el-popover

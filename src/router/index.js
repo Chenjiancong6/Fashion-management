@@ -3,40 +3,49 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-const home = () =>import ("@/views/home/Home");
-const detail = () => import("@/views/detail/Detail");
-const login = () =>import ("@/views/account/login");
-const LayoutIndex =()=>import("@/components/layout/")
+const home = () => import("@/views/home/Home");
+const Default =()=>import("@/views/default/default")
+const detail =()=>import("@/views/detail/Detail")
+const login = () => import("@/views/account/login");
+const LayoutIndex = () => import("@/components/layout/")
+
+const carousel =()=>import("@/views/home/carousel");  //轮播图
+
 const routes = [
     {
-      path:'/',
-      redirect:'/index',
-      name:'LayoutIndex',
-      component:LayoutIndex,
-      //嵌套路由
-      children:[
-         {
-           path:"",
-           name:"home",
-           component:home
-         },
-          {
-              path: "/detail",
-              name: "detail",
-              component: detail
-          },
-        ] 
+        path: '/index',
+        redirect: '/index',
+        name: 'LayoutIndex',
+        component: LayoutIndex,
+        meta: {
+            title: '首页',
+            auth: true
+        },
+        //嵌套路由
+        children: [
+            {
+                path: "",
+                name: "Default",
+                component: Default
+            },
+            {
+                path: "/home",
+                name: "home",
+                component: home
+            },
+            {
+                path: "/detail",
+                name: "detail",
+                component: detail
+            },
+            {
+                path:"/carousel",  //轮播图
+                name:'carousel',
+                component:carousel
+            }
+        ]
     },
 
-    // {
-    //     path: "/home",
-    //     name: "home",
-    //     component: home,
-    //     meta:{
-    //         title:'首页',
-    //         auth:true
-    //     }
-    // },
     {
         path: "/login",
         name: "Login",
@@ -45,13 +54,13 @@ const routes = [
             title: "登录",
         }
     },
-   
+
 ]
 
 const router = new VueRouter({
     // mode: "hash", //hash：当 URL 改变时，页面不会重新加载
     // base: process.env.BASE_URL,
-     routes,
+    routes,
 })
 
 //to跳转的页面
@@ -59,16 +68,20 @@ const router = new VueRouter({
 //next要跳转的页面
 router.beforeEach((to, from, next) => {
     const auth = to.meta && to.meta.auth //将要跳转的页面
-    if (auth) {      
+    if (auth) {
+        console.log(111111111111)
         let win = window.sessionStorage
-        if (win.getItem("username") == 'admin' && win.getItem("password") == '123456') {           
+        if (win.getItem("username") == 'admin' && win.getItem("password") == '123456') {
             next();
+            console.log(222222)
         } else {
+            console.log(3333333)
             Vue.prototype.$message.success("-请先登录-")
-            next({ path: "/login"})
+            next({ path: "/login" })
         }
-    }else{
+    } else {
         next()
+        console.log(444444444)
     }
 })
 

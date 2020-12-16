@@ -65,12 +65,13 @@ export default {
         if (valid) { 
           //api接口   
           this.$cloudApi.login({
-            username:this.loginForm.username,password:this.loginForm.password
+            username:this.loginForm.username,
+            password:this.loginForm.password
             })
               //获取账号和密码放在本地缓存
            sessionStorage.setItem('username',this.loginForm.username)
            sessionStorage.setItem('password',this.loginForm.password)
-         setTimeout(()=>{this.$router.replace("/");},4000)
+         setTimeout(()=>{this.$router.replace("/index");},4000)
         
          
         } else {

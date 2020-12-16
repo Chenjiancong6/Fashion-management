@@ -13,18 +13,18 @@
      <el-submenu index="/">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
-          <span>首页</span>
+          <span>欢迎页</span>
         </template>
          </el-submenu>
     <!--  -->
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>详情页</span>
+          <span>首页</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/detail">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
+          <el-menu-item index="/carousel">轮播图</el-menu-item>
+          <el-menu-item index="/index">选项2</el-menu-item>
            <el-menu-item index="1-3">选项3</el-menu-item>
            <el-menu-item index="1-4">选项4</el-menu-item>
            </el-menu-item-group>
@@ -33,7 +33,7 @@
       <el-submenu index="2">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>导航二</span>
+          <span>分类页</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="1-1">选项1</el-menu-item>
@@ -46,7 +46,7 @@
        <el-submenu index="3">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>导航三</span>
+          <span>详情页</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="1-1">选项1</el-menu-item>
@@ -59,7 +59,7 @@
        <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <span>导航四</span>
+          <span>个人中心</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="1-1">选项1</el-menu-item>
