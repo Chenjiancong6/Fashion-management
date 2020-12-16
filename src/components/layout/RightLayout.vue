@@ -82,15 +82,15 @@ export default {
           shop: "王小虎夫妻店",
           shopId: "10333"
         },
-        {
-          id: "12987126",
-          name: "好滋好味鸡蛋仔",
-          category: "江浙小吃、小吃零食",
-          desc: "荷兰优质淡奶，奶香浓而不腻",
-          address: "上海市普陀区真北路",
-          shop: "王小虎夫妻店",
-          shopId: "10333"
-        }
+        // {
+        //   id: "12987126",
+        //   name: "好滋好味鸡蛋仔",
+        //   category: "江浙小吃、小吃零食",
+        //   desc: "荷兰优质淡奶，奶香浓而不腻",
+        //   address: "上海市普陀区真北路",
+        //   shop: "王小虎夫妻店",
+        //   shopId: "10333"
+        // }
       ]
     };
   }
@@ -98,7 +98,6 @@ export default {
 </script>
 
 <style>
-
 .demo-table-expand {
   font-size: 0;
 }
