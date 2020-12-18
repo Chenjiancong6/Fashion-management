@@ -10,17 +10,25 @@
     </el-row>
     <!-- 表格 -->
     <el-row style="margin-top:10px">
-      <el-table :data="tableData"  style="width: 100%" :row-class-name="tableRowClassName">
+      <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="path" label="图片">
-          <img width="50" :src="tableData[2].path" height="50" />
+          <template scope="scope">
+            <img :src="scope.row.path" width="60" height="60" alt="图片加载失败" />
+          </template>
         </el-table-column>
-        <el-table-column prop="name" label="图片名称" width="180"></el-table-column>
+        <el-table-column prop="name" label="图片名称"></el-table-column>
         <el-table-column prop="mime_type" label="图片类型"></el-table-column>
       </el-table>
     </el-row>
-    <el-row style="float:right;margin-top:20px">
-      <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+    <el-row style="float:right; margin-top:20px">
+      <el-pagination
+        @current-change="handlePages"
+        background
+        :page-size="pageSize"
+        layout="prev, pager, next, jumper"
+        :total="tottalCount"
+      ></el-pagination>
     </el-row>
   </div>
 </template>
@@ -31,7 +39,9 @@ export default {
   name: "carousel",
   data() {
     return {
-      tableData:[]
+      tableData: [],
+      tottalCount:0, //页面数据的总条数
+      pageSize:2,  //每页显示多条数据
     };
   },
   methods: {
@@ -44,20 +54,60 @@ export default {
       return "";
     },
     handleRefresh() {},
+
+    handlePages(page) {
+      this.showPages(page)   
+    },
+
     handleAdd() {
-    
-    }
+      let MyFile = new BaaS.File();
+
+      // 查找所有文件
+      MyFile.find();
+
+      let query = new BaaS.Query();
+      // 查询某一文件分类下的所有文件
+      query.compare("category_name", "=", "home_carousel");
+      // 查询文件名包含指定字符串的文件
+
+      MyFile.setQuery(query).find();
+
+      MyFile.limit(10)
+        .offset(5)
+        .find()
+        .then();
+      console.log(MyFile.setQuery(query).find(), 11);
+    },
+
+    showPages(page=0){
+      let MyFile = new BaaS.File();
+      let query = new BaaS.Query();
+      //查询某一文件分类下的所有文件
+      query.compare("category_name", "=", "home_carousel");
+      //分页查询
+      MyFile.setQuery(query).limit(this.pageSize).offset(page).find().then(res => {
+      this.tableData = res.data.objects;        
+      });
+      
+      //查询文件的总条数
+       MyFile.setQuery(query).count().then(num => {
+       this.tottalCount=num;
+      //console.log(this.tottalCount,221); 
+     })
+
+      
+      }
+
   },
-  created() {
-     let MyFileCategory = new BaaS.FileCategory();
-      MyFileCategory.getFileList("5fd9f79f8692dc2c35484970").then(res => {      
-          this.tableData=res.data.objects
-           console.log(this.tableData, 5555);
-        },
-        err => {
-          // err
-        }
-      );
+  created(){
+    // let MyFileCategory = new BaaS.FileCategory();
+    // //获取轮播文件分类的所有图片资源
+    // MyFileCategory.getFileList("5fd9f79f8692dc2c35484970").then(res => {
+    //   this.tableData = res.data.objects;
+    //   // console.log(this.tableData, 5555);
+    // });
+      this.showPages()
+      
   }
 };
 </script>
