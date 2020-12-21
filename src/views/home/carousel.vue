@@ -21,6 +21,48 @@
         <el-table-column prop="mime_type" label="图片类型"></el-table-column>
       </el-table>
     </el-row>
+    <!-- 新增弹窗 -->
+    <el-row>
+      <el-dialog
+        :visible.sync="addDialog"
+        v-dialogDrag
+        :append-to-body="true"
+        :close-on-click-modal="false"
+        width="500px"
+        title="新增轮播图"
+      >
+      <el-form ref="createForm" :rules="rules" :model="createForm" label-position="top">
+        <el-row>
+          <el-col :span="12">
+            <el-upload
+              class="avatar-uploader"
+              :action="imageUrl"
+              :show-file-list="false"
+              :on-success="uploadSuceess"
+              :on-error="uploadError"
+            >
+              <img  
+              v-if="createForm.photo"
+             :src="createForm.photo"
+              class="avatar" />
+              <el-button v-if="createForm.photo" class="x-full" size="mini" type="primary" plain>修改</el-button>
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
+            </el-upload>
+          </el-col>
+          <el-col :span="10">
+             <el-form-item prop="name" style="margin: 0;padding: 0" label="姓名" size="mini">
+                <el-input v-model="createForm.name" />
+              </el-form-item>
+          </el-col>
+        </el-row>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="handleCancle('createForm')">取 消</el-button>
+          <el-button type="primary" @click="handleCreate('createForm')">确 定</el-button>
+        </span>
+      </el-dialog>
+    </el-row>
+    <!--  -->
     <el-row style="float:right; margin-top:20px">
       <el-pagination
         @current-change="handlePages"
@@ -40,8 +82,25 @@ export default {
   data() {
     return {
       tableData: [],
-      tottalCount:0, //页面数据的总条数
-      pageSize:2,  //每页显示多条数据
+      tottalCount: 0, //页面数据的总条数
+      pageSize: 3, //每页显示多条数据
+      addDialog: false,
+      addImgName: "",
+      imageUrl: "", //图片地址
+      createForm:{
+        name:'',//图片名
+        photo:'',//图片
+      },
+      //表单验证
+      rules:{
+        name:[
+          {
+            required: true,
+            message: "图片名字不能为空",
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -55,59 +114,68 @@ export default {
     },
     handleRefresh() {},
 
+    //弹窗取消
+    handleCancle() {
+      this.addDialog = false;
+    },
+
+    //弹窗确认
+    handleCreate() {
+      this.addDialog = false;
+    },
+    
+    //上传图片成功时
+    uploadSuceess(response, file, fileList){
+       console.log(response,11);
+        console.log(file,22); console.log(fileList,33);
+    },
+
+    //上传图片失败
+     uploadError(err, file, fileList) {
+       console.log(err,"上传图片失败");
+       console.log(file,"上传图片失败");
+       console.log(fileList,"上传图片失败");
+      this.$notify.warning({
+        message: err,
+        position: "top-right"
+      });
+    },
+
     handlePages(page) {
-      this.showPages(page)   
+      this.showPages(page);
     },
 
+    //新增
     handleAdd() {
-      let MyFile = new BaaS.File();
-
-      // 查找所有文件
-      MyFile.find();
-
-      let query = new BaaS.Query();
-      // 查询某一文件分类下的所有文件
-      query.compare("category_name", "=", "home_carousel");
-      // 查询文件名包含指定字符串的文件
-
-      MyFile.setQuery(query).find();
-
-      MyFile.limit(10)
-        .offset(5)
-        .find()
-        .then();
-      console.log(MyFile.setQuery(query).find(), 11);
+      this.addDialog = true;
     },
-
-    showPages(page=0){
+    
+    //分页函数
+    showPages(page = 0) {
       let MyFile = new BaaS.File();
       let query = new BaaS.Query();
       //查询某一文件分类下的所有文件
       query.compare("category_name", "=", "home_carousel");
       //分页查询
-      MyFile.setQuery(query).limit(this.pageSize).offset(page).find().then(res => {
-      this.tableData = res.data.objects;        
-      });
-      
+      MyFile.setQuery(query)
+        .limit(this.pageSize)
+        .offset(page)
+        .find()
+        .then(res => {
+          this.tableData = res.data.objects;
+        });
+
       //查询文件的总条数
-       MyFile.setQuery(query).count().then(num => {
-       this.tottalCount=num;
-      //console.log(this.tottalCount,221); 
-     })
-
-      
-      }
-
+      MyFile.setQuery(query)
+        .count()
+        .then(num => {
+          this.tottalCount = num;
+          //console.log(this.tottalCount,221);
+        });
+    }
   },
-  created(){
-    // let MyFileCategory = new BaaS.FileCategory();
-    // //获取轮播文件分类的所有图片资源
-    // MyFileCategory.getFileList("5fd9f79f8692dc2c35484970").then(res => {
-    //   this.tableData = res.data.objects;
-    //   // console.log(this.tableData, 5555);
-    // });
-      this.showPages()
-      
+  created() {
+    this.showPages();
   }
 };
 </script>
@@ -123,5 +191,29 @@ export default {
 
 .el-table .success-row {
   background: #f0f9eb;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>
