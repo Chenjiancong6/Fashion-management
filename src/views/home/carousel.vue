@@ -31,30 +31,35 @@
         width="500px"
         title="新增轮播图"
       >
-      <el-form ref="createForm" :rules="rules" :model="createForm" label-position="top">
-        <el-row>
-          <el-col :span="12">
-            <el-upload
-              class="avatar-uploader"
-              :action="imageUrl"
-              :show-file-list="false"
-              :on-success="uploadSuceess"
-              :on-error="uploadError"
-            >
-              <img  
-              v-if="createForm.photo"
-             :src="createForm.photo"
-              class="avatar" />
-              <el-button v-if="createForm.photo" class="x-full" size="mini" type="primary" plain>修改</el-button>
-              <i v-else class="el-icon-plus avatar-uploader-icon" />
-            </el-upload>
-          </el-col>
-          <el-col :span="10">
-             <el-form-item prop="name" style="margin: 0;padding: 0" label="姓名" size="mini">
+        <el-form ref="createForm" :rules="rules" :model="createForm" label-position="top">
+          <el-row>
+            <el-col :span="12">
+              <el-upload
+                name="name"
+                class="avatar-uploader"       
+                action="https://4e891f3054e50221540d.myminapp.com/hserve/v2.1/upload/"
+                :on-change="imgSaveToUrl"
+                :show-file-list="false"
+                :on-success="uploadSuceess"
+                :on-error="uploadError"
+              >
+                <img v-if="createForm.photo" :src="createForm.photo" class="avatar" />
+                <el-button
+                  v-if="createForm.photo"
+                  class="x-full"
+                  size="mini"
+                  type="primary"
+                  plain
+                >修改</el-button>
+                <i v-else class="el-icon-plus avatar-uploader-icon" />
+              </el-upload>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item prop="name" style="margin: 0;padding: 0" label="图片名字" size="mini">
                 <el-input v-model="createForm.name" />
               </el-form-item>
-          </el-col>
-        </el-row>
+            </el-col>
+          </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="handleCancle('createForm')">取 消</el-button>
@@ -87,13 +92,13 @@ export default {
       addDialog: false,
       addImgName: "",
       imageUrl: "", //图片地址
-      createForm:{
-        name:'',//图片名
-        photo:'',//图片
+      createForm: {
+        name: "", //图片名
+        photo: "" //图片
       },
       //表单验证
-      rules:{
-        name:[
+      rules: {
+        name: [
           {
             required: true,
             message: "图片名字不能为空",
@@ -120,26 +125,75 @@ export default {
     },
 
     //弹窗确认
-    handleCreate() {
-      this.addDialog = false;
+    handleCreate(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          //文件上传API
+          new Promise((resolve, reject) => {
+            let fileParams = { 
+              filePath: this.createForm.photo,
+              fileObj:this.createForm
+             };
+              
+            let metaData = { categoryName: "home_carousel" };
+            let File = new BaaS.File();
+            File.upload(fileParams, metaData).then(res => {
+              console.log(res, "文件上传API");
+            });
+
+            this.addDialog = false;
+            //清空缓存
+            this.createForm = {
+              name: "", //图片名
+              photo: "" //图片
+            };
+            resolve();
+            console.log("发送数据");
+            
+          }).catch(err=>{
+            reject(err)
+          })
+        } else {
+          this.$notify.warning({
+            message: "数据有误",
+            position: "top-right"
+          });
+          return false;
+        }
+      });
     },
-    
+
+    //选取完后 上传成功/失败后触发
+    imgSaveToUrl(file) {
+      //图片本地预览方法
+      let URL = window.URL || window.webkitURL;
+     this.createForm.photo = URL.createObjectURL(file.raw);
+      
+      console.log(this.createForm.photo,1234);
+      
+      console.log(URL.createObjectURL(file.raw), "本地路径");
+    },
+
     //上传图片成功时
-    uploadSuceess(response, file, fileList){
-       console.log(response,11);
-        console.log(file,22); console.log(fileList,33);
+    uploadSuceess(response, file, fileList) {
+      const files = this.$refs.file.file[0];
+      console.log(files, "图片");
+
+      console.log(response, 11);
+      console.log(file, 22);
+      console.log(fileList, 33);
     },
 
     //上传图片失败
-     uploadError(err, file, fileList) {
-       console.log(err,"上传图片失败");
-       console.log(file,"上传图片失败");
-       console.log(fileList,"上传图片失败");
-      this.$notify.warning({
-        message: err,
-        position: "top-right"
-      });
-    },
+    // uploadError(err, file, fileList) {
+    //   console.log(err, "上传图片失败1");
+    //   console.log(file, "上传图片失败2");
+    //   console.log(fileList, "上传图片失败3");
+    //   this.$notify.warning({
+    //     message: err,
+    //     position: "top-right"
+    //   });
+    // },
 
     handlePages(page) {
       this.showPages(page);
@@ -149,7 +203,7 @@ export default {
     handleAdd() {
       this.addDialog = true;
     },
-    
+
     //分页函数
     showPages(page = 0) {
       let MyFile = new BaaS.File();

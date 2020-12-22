@@ -25,7 +25,7 @@
         <el-menu-item-group>
           <el-menu-item index="/carousel">轮播图</el-menu-item>
           <el-menu-item index="/index">选项2</el-menu-item>
-           <el-menu-item index="1-3">选项3</el-menu-item>
+           <el-menu-item index="/home">选项3</el-menu-item>
            <el-menu-item index="1-4">选项4</el-menu-item>
            </el-menu-item-group>
       </el-submenu>
