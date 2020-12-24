@@ -6,11 +6,15 @@
       <el-button size="mini" type="primary" icon="el-icon-refresh" plain @click="handleRefresh">刷新</el-button>
       <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleAdd" plain>新增</el-button>
       <el-button size="mini" type="primary" icon="el-icon-edit" plain>修改</el-button>
-      <el-button size="mini" type="primary" icon="el-icon-close" plain>删除</el-button>
     </el-row>
     <!-- 表格 -->
     <el-row style="margin-top:10px">
-      <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
+      <el-table :data="tableData" 
+      highlight-current-row 
+      style="width: 100%" 
+       :stripe="true"
+       size="mini"
+      :row-class-name="tableRowClassName">
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="path" label="图片">
           <template scope="scope">
@@ -18,7 +22,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="图片名称"></el-table-column>
-        <el-table-column prop="mime_type" label="图片类型"></el-table-column>
+        <el-table-column prop="mime_type" label="图片类型"> </el-table-column>
+        <el-table-column prop="mime_type" label="操作">
+         <template slot-scope="scope">
+          <el-button icon="el-icon-delete" type="danger" circle @click="handleDelete(scope.row.id)">   
+          </el-button>
+       </template> 
+        </el-table-column>
       </el-table>
     </el-row>
     <!-- 新增弹窗 -->
@@ -35,6 +45,8 @@
           <el-row>
             <el-col :span="12">
               <el-upload
+                ref="file"
+                id="fileInput"
                 name="name"
                 class="avatar-uploader"       
                 action="https://4e891f3054e50221540d.myminapp.com/hserve/v2.1/upload/"
@@ -117,7 +129,15 @@ export default {
       }
       return "";
     },
+     
     handleRefresh() {},
+
+    //删除
+    handleDelete(id){
+       console.log(id,11111);
+       let MyFile = new BaaS.File()
+       MyFile.delete("5fd9f7bcc568f12f8ebd383b").then()
+    },
 
     //弹窗取消
     handleCancle() {
@@ -130,7 +150,15 @@ export default {
         if (valid) {
           //文件上传API
           new Promise((resolve, reject) => {
-            let fileParams = { 
+            
+         const reader = new FileReader();
+
+        reader.addEventListener("load", () => resolve(reader.result));
+        reader.addEventListener("error", err => reject(err));
+
+        reader.readAsBinaryString(file);
+
+            let fileParams = {
               filePath: this.createForm.photo,
               fileObj:this.createForm
              };
@@ -166,11 +194,11 @@ export default {
     //选取完后 上传成功/失败后触发
     imgSaveToUrl(file) {
       //图片本地预览方法
+     //const files =this.$refs.file.files[0];
+
       let URL = window.URL || window.webkitURL;
      this.createForm.photo = URL.createObjectURL(file.raw);
-      
-      console.log(this.createForm.photo,1234);
-      
+         
       console.log(URL.createObjectURL(file.raw), "本地路径");
     },
 
@@ -185,15 +213,15 @@ export default {
     },
 
     //上传图片失败
-    // uploadError(err, file, fileList) {
-    //   console.log(err, "上传图片失败1");
-    //   console.log(file, "上传图片失败2");
-    //   console.log(fileList, "上传图片失败3");
-    //   this.$notify.warning({
-    //     message: err,
-    //     position: "top-right"
-    //   });
-    // },
+    uploadError(err, file, fileList) {
+      console.log(err, "上传图片失败1");
+      console.log(file, "上传图片失败2");
+      console.log(fileList, "上传图片失败3");
+      this.$notify.warning({
+        message: err,
+        position: "top-right"
+      });
+    },
 
     handlePages(page) {
       this.showPages(page);
@@ -211,12 +239,10 @@ export default {
       //查询某一文件分类下的所有文件
       query.compare("category_name", "=", "home_carousel");
       //分页查询
-      MyFile.setQuery(query)
-        .limit(this.pageSize)
-        .offset(page)
-        .find()
-        .then(res => {
+      MyFile.setQuery(query).limit(this.pageSize).offset(page).find().then(res => {
           this.tableData = res.data.objects;
+          console.log(this.tableData,"图片");
+          
         });
 
       //查询文件的总条数

@@ -18,7 +18,7 @@ const routes = [
         name: 'LayoutIndex',
         component: LayoutIndex,
         meta: {
-            title: '首页',
+            title: '',
             auth: true
         },
         //嵌套路由
@@ -26,22 +26,38 @@ const routes = [
             {
                 path: "",
                 name: "Default",
-                component: Default
+                component: Default,
+                meta: {
+                    title: '默认',
+                    auth: true
+                },
             },
             {
                 path: "/home",
                 name: "home",
-                component: home
+                component: home,
+                meta: {
+                    title: '首页',
+                    auth: true
+                },
             },
             {
                 path: "/detail",
                 name: "detail",
-                component: detail
+                component: detail,
+                meta: {
+                    title: '详情页',
+                    auth: true
+                },
             },
             {
                 path:"/carousel",  //轮播图
                 name:'carousel',
-                component:carousel
+                component:carousel,
+                meta: {
+                    title: '轮播图',
+                    auth: true
+                },
             }
         ]
     },
@@ -72,7 +88,8 @@ router.beforeEach((to, from, next) => {
         console.log(111111111111)
         let win = window.sessionStorage
         if (win.getItem("username") == 'admin' && win.getItem("password") == '123456') {
-            next();
+           // next({ path: "/index" });  //不起作用？
+           next()
             console.log(222222)
         } else {
             console.log(3333333)
@@ -81,7 +98,7 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         next()
-      //  console.log(444444444)
+        console.log(444444444)
     }
 })
 

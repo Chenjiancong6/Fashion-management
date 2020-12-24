@@ -17,19 +17,43 @@
         </el-popover>  
       <span>
         欢迎：
-        <span>超级大哈克</span>
+        <span>{{nickname}}</span>
       </span>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
    name:'LayoutHeader',
     props:{
    isCollapse:{
      type:Boolean
    }
+ },
+ data(){
+   return{
+     nickname:''
+   }
+ },
+ 
+ methods:{
+    ...mapActions({
+      getNickName:'header/getNickName'
+    }),
+      
+ },
+ computed:{
+   ...mapGetters({
+      nickname:'header/nickname'
+   })
+ },
+ created(){
+    //获取用户登录昵称
+      let win = window.sessionStorage;
+    this.nickname = win.getItem("nickname")
+     
  }
 }
 </script>

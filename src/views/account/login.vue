@@ -46,8 +46,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "admin",
-        password: "123456"
+        username: "",
+        password: ""
       },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       loginFormRules: {
@@ -67,11 +67,16 @@ export default {
           this.$cloudApi.login({
             username:this.loginForm.username,
             password:this.loginForm.password
+            }).then(res=>{
+
+              console.log(res,66)
+            }).catch(err=>{
+              console.log(err,777);             
             })
               //获取账号和密码放在本地缓存
            sessionStorage.setItem('username',this.loginForm.username)
            sessionStorage.setItem('password',this.loginForm.password)
-         setTimeout(()=>{this.$router.replace("/index");},4000)
+            setTimeout(()=>{this.$router.replace("/index");},2000)
         
          
         } else {
