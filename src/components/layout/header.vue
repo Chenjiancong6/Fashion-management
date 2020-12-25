@@ -15,9 +15,13 @@
         >
           <el-button slot="reference" icon="el-icon-user">个人中心</el-button>
         </el-popover>  
+       
+       
       <span>
-        欢迎：
-        <span>{{nickname}}</span>
+        <!-- <span>{{nickname}}</span> -->
+         <span class="avatar">
+           <img  src="https://media.ifanrusercontent.com/hydrogen/default_avatar.png" alt="" srcset="">
+        </span>
       </span>
     </div>
   </div>
@@ -45,9 +49,9 @@ export default {
       
  },
  computed:{
-   ...mapGetters({
-      nickname:'header/nickname'
-   })
+  //  ...mapGetters({
+  //     nickname:'header/nickname'
+  //  })
  },
  created(){
     //获取用户登录昵称
@@ -63,5 +67,10 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.avatar img{
+  height: 10px;
+  width: 10px;
+  display: flex;
 }
 </style>

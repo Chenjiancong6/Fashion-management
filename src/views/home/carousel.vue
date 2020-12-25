@@ -9,12 +9,14 @@
     </el-row>
     <!-- 表格 -->
     <el-row style="margin-top:10px">
-      <el-table :data="tableData" 
-      highlight-current-row 
-      style="width: 100%" 
-       :stripe="true"
-       size="mini"
-      :row-class-name="tableRowClassName">
+      <el-table
+        :data="tableData"
+        highlight-current-row
+        style="width: 100%"
+        :stripe="true"
+        size="mini"
+        :row-class-name="tableRowClassName"
+      >
         <el-table-column type="index" width="50"></el-table-column>
         <el-table-column prop="path" label="图片">
           <template scope="scope">
@@ -22,12 +24,16 @@
           </template>
         </el-table-column>
         <el-table-column prop="name" label="图片名称"></el-table-column>
-        <el-table-column prop="mime_type" label="图片类型"> </el-table-column>
+        <el-table-column prop="mime_type" label="图片类型"></el-table-column>
         <el-table-column prop="mime_type" label="操作">
-         <template slot-scope="scope">
-          <el-button icon="el-icon-delete" type="danger" circle @click="handleDelete(scope.row.id)">   
-          </el-button>
-       </template> 
+          <template slot-scope="scope">
+            <el-button
+              icon="el-icon-delete"
+              type="danger"
+              circle
+              @click="handleDelete(scope.row.id)"
+            ></el-button>
+          </template>
         </el-table-column>
       </el-table>
     </el-row>
@@ -35,7 +41,6 @@
     <el-row>
       <el-dialog
         :visible.sync="addDialog"
-        v-dialogDrag
         :append-to-body="true"
         :close-on-click-modal="false"
         width="500px"
@@ -46,12 +51,11 @@
             <el-col :span="12">
               <el-upload
                 ref="file"
-                id="fileInput"
-                name="name"
-                class="avatar-uploader"       
-                action="https://4e891f3054e50221540d.myminapp.com/hserve/v2.1/upload/"
+                class="avatar-uploader"
+                action="https://4e891f3054e50221540d.myminapp.com/hserve/v2.1/upload/"               
                 :on-change="imgSaveToUrl"
                 :show-file-list="false"
+                :before-upload="beforeUpload"
                 :on-success="uploadSuceess"
                 :on-error="uploadError"
               >
@@ -104,6 +108,7 @@ export default {
       addDialog: false,
       addImgName: "",
       imageUrl: "", //图片地址
+      fileObjs: "", //文件对象
       createForm: {
         name: "", //图片名
         photo: "" //图片
@@ -121,6 +126,9 @@ export default {
     };
   },
   methods: {
+    uploadImage() {
+      console.log("cc");
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 1) {
         return "warning-row";
@@ -129,14 +137,14 @@ export default {
       }
       return "";
     },
-     
+
     handleRefresh() {},
 
     //删除
-    handleDelete(id){
-       console.log(id,11111);
-       let MyFile = new BaaS.File()
-       MyFile.delete("5fd9f7bcc568f12f8ebd383b").then()
+    handleDelete(id) {
+      console.log(id, 11111);
+      let MyFile = new BaaS.File();
+      MyFile.delete("5fd9f7bcc568f12f8ebd383b").then();
     },
 
     //弹窗取消
@@ -150,21 +158,23 @@ export default {
         if (valid) {
           //文件上传API
           new Promise((resolve, reject) => {
-            
-         const reader = new FileReader();
-
-        reader.addEventListener("load", () => resolve(reader.result));
-        reader.addEventListener("error", err => reject(err));
-
-        reader.readAsBinaryString(file);
-
+          //   let file =  {
+          //   status: 'ready',
+          //   name: this.fileObjs.name,
+          //   size: this.fileObjs.size,
+          //   percentage: 0,          
+          //   uid: this.fileObjs.uid,
+          //   raw: this.fileObjs
+          //  };
+  
             let fileParams = {
               filePath: this.createForm.photo,
-              fileObj:this.createForm
-             };
-              
-            let metaData = { categoryName: "home_carousel" };
+              fileObj: this.fileObjs //文件对象
+            };                  
+            //console.log(fileParams);
+            let metaData = { categoryName: "home_carousel" };  //指定上传的文件
             let File = new BaaS.File();
+            //知晓云图片上传api
             File.upload(fileParams, metaData).then(res => {
               console.log(res, "文件上传API");
             });
@@ -176,11 +186,7 @@ export default {
               photo: "" //图片
             };
             resolve();
-            console.log("发送数据");
-            
-          }).catch(err=>{
-            reject(err)
-          })
+          });
         } else {
           this.$notify.warning({
             message: "数据有误",
@@ -191,14 +197,18 @@ export default {
       });
     },
 
+    //上传文件之前的钩子
+    beforeUpload(file) {
+      this.fileObjs = file;
+    },
     //选取完后 上传成功/失败后触发
     imgSaveToUrl(file) {
       //图片本地预览方法
-     //const files =this.$refs.file.files[0];
+      //const files =this.$refs.file.files[0];
 
       let URL = window.URL || window.webkitURL;
-     this.createForm.photo = URL.createObjectURL(file.raw);
-         
+      this.createForm.photo = URL.createObjectURL(file.raw);
+
       console.log(URL.createObjectURL(file.raw), "本地路径");
     },
 
@@ -239,10 +249,13 @@ export default {
       //查询某一文件分类下的所有文件
       query.compare("category_name", "=", "home_carousel");
       //分页查询
-      MyFile.setQuery(query).limit(this.pageSize).offset(page).find().then(res => {
+      MyFile.setQuery(query)
+        .limit(this.pageSize)
+        .offset(page)
+        .find()
+        .then(res => {
           this.tableData = res.data.objects;
-          console.log(this.tableData,"图片");
-          
+          console.log(this.tableData, "图片");
         });
 
       //查询文件的总条数
