@@ -2,28 +2,25 @@
   <div class="layout-header">
       <div>
         <i :class="{'el-icon-s-fold':isCollapse,
-                    'el-icon-s-unfold':!isCollapse}"></i>
-       <!-- <span>潮流街APP后台管理系统</span> -->
+        'el-icon-s-unfold':!isCollapse}">
+        </i>
+        <!-- <span>潮流街APP后台管理系统</span>  -->
        </div>
-      <div class="layout-right">   
-        <el-popover
-          placement="bottom-start"
-          title="标题"
-          width="200"
-          trigger="hover"
-          content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
-        >
-          <el-button slot="reference" icon="el-icon-user">个人中心</el-button>
-        </el-popover>  
-       
-       
-      <span>
-        <!-- <span>{{nickname}}</span> -->
-         <span class="avatar">
-           <img  src="https://media.ifanrusercontent.com/hydrogen/default_avatar.png" alt="" srcset="">
-        </span>
-      </span>
-    </div>
+        <div>
+          <el-dropdown>
+            <div style=" display: flex;align-items: center;">
+              <img 
+              style=" height:40px;width:40px;border-radius: 50%;margin-right: 10px;" 
+              :src="avatar" alt="">
+              <span>{{nickname}}</span>
+              <i style="margin-left:20px" class="el-icon-loading  el-icon--right"></i>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>设置</el-dropdown-item>
+              <el-dropdown-item>退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
   </div>
 </template>
 
@@ -38,7 +35,8 @@ export default {
  },
  data(){
    return{
-     nickname:''
+     nickname:'',
+     avatar:""
    }
  },
  
@@ -54,23 +52,26 @@ export default {
   //  })
  },
  created(){
-    //获取用户登录昵称
+    //获取用户登录昵称和头像
       let win = window.sessionStorage;
-    this.nickname = win.getItem("nickname")
-     
+      this.nickname = win.getItem("nickname")
+      this.avatar = win.getItem("avatar")  
  }
 }
 </script>
 
 <style>
 .layout-header{
+  height: 60px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
 }
-.avatar img{
-  height: 10px;
-  width: 10px;
+.avata-warp{
   display: flex;
+  align-items: center;
 }
+
+
+
 </style>

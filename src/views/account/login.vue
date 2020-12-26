@@ -67,11 +67,6 @@ export default {
           this.$cloudApi.login({
             username:this.loginForm.username,
             password:this.loginForm.password
-            }).then(res=>{
-
-              console.log(res,66)
-            }).catch(err=>{
-              console.log(err,777);             
             })
               //获取账号和密码放在本地缓存
            sessionStorage.setItem('username',this.loginForm.username)

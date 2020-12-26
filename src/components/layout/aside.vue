@@ -32,7 +32,7 @@
      <!--  -->
       <el-submenu index="2">
         <template slot="title">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-s-promotion"></i>
           <span>分类页</span>
         </template>
         <el-menu-item-group>
@@ -45,7 +45,7 @@
       <!--  -->
        <el-submenu index="3">
         <template slot="title">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-loading"></i>
           <span>详情页</span>
         </template>
         <el-menu-item-group>
@@ -58,7 +58,7 @@
       <!--  -->
        <el-submenu index="4">
         <template slot="title">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-shopping-cart-2"></i>
           <span>个人中心</span>
         </template>
         <el-menu-item-group>

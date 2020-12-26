@@ -5,7 +5,6 @@
     <el-row class="tool-bar">
       <el-button size="mini" type="primary" icon="el-icon-refresh" plain @click="handleRefresh">刷新</el-button>
       <el-button size="mini" type="primary" icon="el-icon-plus" @click="handleAdd" plain>新增</el-button>
-      <el-button size="mini" type="primary" icon="el-icon-edit" plain>修改</el-button>
     </el-row>
     <!-- 表格 -->
     <el-row style="margin-top:10px">
@@ -26,6 +25,7 @@
         <el-table-column prop="name" label="图片名称"></el-table-column>
         <el-table-column prop="mime_type" label="图片类型"></el-table-column>
         <el-table-column prop="mime_type" label="操作">
+          <!-- 删除 -->
           <template slot-scope="scope">
             <el-button
               icon="el-icon-delete"
@@ -55,9 +55,7 @@
                 action="https://4e891f3054e50221540d.myminapp.com/hserve/v2.1/upload/"               
                 :on-change="imgSaveToUrl"
                 :show-file-list="false"
-                :before-upload="beforeUpload"
-                :on-success="uploadSuceess"
-                :on-error="uploadError"
+                :before-upload="beforeUpload"               
               >
                 <img v-if="createForm.photo" :src="createForm.photo" class="avatar" />
                 <el-button
@@ -106,8 +104,6 @@ export default {
       tottalCount: 0, //页面数据的总条数
       pageSize: 3, //每页显示多条数据
       addDialog: false,
-      addImgName: "",
-      imageUrl: "", //图片地址
       fileObjs: "", //文件对象
       createForm: {
         name: "", //图片名
@@ -126,25 +122,43 @@ export default {
     };
   },
   methods: {
-    uploadImage() {
-      console.log("cc");
-    },
     tableRowClassName({ row, rowIndex }) {
-      if (rowIndex === 1) {
+      if (rowIndex === 1||rowIndex === 2||rowIndex === 3) {
         return "warning-row";
       } else if (rowIndex === 3) {
         return "success-row";
       }
       return "";
     },
-
-    handleRefresh() {},
+     
+     //刷新
+    handleRefresh() {
+     //this.showPages(); 
+     location.reload();  //整个网页页面刷新  
+    },
 
     //删除
     handleDelete(id) {
-      console.log(id, 11111);
-      let MyFile = new BaaS.File();
-      MyFile.delete("5fd9f7bcc568f12f8ebd383b").then();
+      console.log(id, 11111); 
+       this.$confirm('确定要删除此文件吗？', '删除文件', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //删除api
+       let MyFile = new BaaS.File();
+        MyFile.delete(id).then();  
+
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     },
 
     //弹窗取消
@@ -169,16 +183,15 @@ export default {
   
             let fileParams = {
               filePath: this.createForm.photo,
-              fileObj: this.fileObjs //文件对象
+              fileObj: this.fileObjs //文件对象 
             };                  
             //console.log(fileParams);
             let metaData = { categoryName: "home_carousel" };  //指定上传的文件
             let File = new BaaS.File();
             //知晓云图片上传api
             File.upload(fileParams, metaData).then(res => {
-              console.log(res, "文件上传API");
+             // console.log(res, "文件上传API"); 
             });
-
             this.addDialog = false;
             //清空缓存
             this.createForm = {
@@ -186,10 +199,17 @@ export default {
               photo: "" //图片
             };
             resolve();
+             this.$notify({
+            message: "上传成功",
+            type: 'success',
+            position: "top-right"
+          });
+          //整个网页页面刷新
+          location.reload();  
           });
         } else {
           this.$notify.warning({
-            message: "数据有误",
+            message: "上传失败",
             position: "top-right"
           });
           return false;
@@ -199,40 +219,19 @@ export default {
 
     //上传文件之前的钩子
     beforeUpload(file) {
-      this.fileObjs = file;
+      this.fileObjs = file;  //获取文件对象
     },
+
     //选取完后 上传成功/失败后触发
     imgSaveToUrl(file) {
       //图片本地预览方法
       //const files =this.$refs.file.files[0];
-
-      let URL = window.URL || window.webkitURL;
+      let URL = window.URL || window.webkitURL;  //本地路径  
       this.createForm.photo = URL.createObjectURL(file.raw);
-
-      console.log(URL.createObjectURL(file.raw), "本地路径");
+     // console.log(URL.createObjectURL(file.raw), "本地路径");
     },
-
-    //上传图片成功时
-    uploadSuceess(response, file, fileList) {
-      const files = this.$refs.file.file[0];
-      console.log(files, "图片");
-
-      console.log(response, 11);
-      console.log(file, 22);
-      console.log(fileList, 33);
-    },
-
-    //上传图片失败
-    uploadError(err, file, fileList) {
-      console.log(err, "上传图片失败1");
-      console.log(file, "上传图片失败2");
-      console.log(fileList, "上传图片失败3");
-      this.$notify.warning({
-        message: err,
-        position: "top-right"
-      });
-    },
-
+    
+    //页面导航数
     handlePages(page) {
       this.showPages(page);
     },
@@ -263,7 +262,7 @@ export default {
         .count()
         .then(num => {
           this.tottalCount = num;
-          //console.log(this.tottalCount,221);
+          console.log(this.tottalCount,"图片总数");
         });
     }
   },

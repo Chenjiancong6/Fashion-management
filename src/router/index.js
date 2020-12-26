@@ -13,8 +13,8 @@ const carousel =()=>import("@/views/home/carousel");  //轮播图
 
 const routes = [
     {
-        path: '/index',
-        redirect: '/index',
+        path: '/',  //
+        redirect: '/index',  //登录后默认进入页面
         name: 'LayoutIndex',
         component: LayoutIndex,
         meta: {
@@ -24,7 +24,7 @@ const routes = [
         //嵌套路由
         children: [
             {
-                path: "",
+                path: "/index",
                 name: "Default",
                 component: Default,
                 meta: {
@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) => {
     if (auth) {
         console.log(111111111111)
         let win = window.sessionStorage
-        if (win.getItem("username") == 'admin' && win.getItem("password") == '123456') {
+        if (win.getItem("nickname")) {
            // next({ path: "/index" });  //不起作用？
            next()
             console.log(222222)
