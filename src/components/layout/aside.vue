@@ -13,7 +13,7 @@
      <el-submenu index="/">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
-          <span>欢迎页</span>
+          <span index="/index">欢迎页</span>
         </template>
          </el-submenu>
     <!--  -->

@@ -50,12 +50,12 @@
           <el-row>
             <el-col :span="12">
               <el-upload
-                ref="file"
+                ref="upload"
                 class="avatar-uploader"
                 action="https://4e891f3054e50221540d.myminapp.com/hserve/v2.1/upload/"               
                 :on-change="imgSaveToUrl"
-                :show-file-list="false"
-                :before-upload="beforeUpload"               
+                :show-file-list="false" 
+                :auto-upload="false"            
               >
                 <img v-if="createForm.photo" :src="createForm.photo" class="avatar" />
                 <el-button
@@ -139,7 +139,6 @@ export default {
 
     //删除
     handleDelete(id) {
-      console.log(id, 11111); 
        this.$confirm('确定要删除此文件吗？', '删除文件', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -148,11 +147,12 @@ export default {
           //删除api
        let MyFile = new BaaS.File();
         MyFile.delete(id).then();  
-
           this.$message({
             type: 'success',
             message: '删除成功!'
           });
+           //整个网页页面刷新
+          location.reload(); 
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -165,6 +165,7 @@ export default {
     handleCancle() {
       this.addDialog = false;
     },
+
 
     //弹窗确认
     handleCreate(formName) {
@@ -185,27 +186,35 @@ export default {
               filePath: this.createForm.photo,
               fileObj: this.fileObjs //文件对象 
             };                  
-            //console.log(fileParams);
+            console.log(fileParams);
             let metaData = { categoryName: "home_carousel" };  //指定上传的文件
             let File = new BaaS.File();
             //知晓云图片上传api
             File.upload(fileParams, metaData).then(res => {
-             // console.log(res, "文件上传API"); 
-            });
+            this.$notify({
+            message: "上传成功",
+            type: 'success',
+            position: "top-right"
+             });
+
+            //手动上传，submit()方法
+            this.$refs.upload.submit();
+
+            //整个网页页面刷新
+            location.reload();  
+            }).catch(err=>{
+            this.$notify.warning({
+            message: "上传失败",
+            position: "top-right"
+          });        
+            })
             this.addDialog = false;
             //清空缓存
             this.createForm = {
               name: "", //图片名
               photo: "" //图片
             };
-            resolve();
-             this.$notify({
-            message: "上传成功",
-            type: 'success',
-            position: "top-right"
-          });
-          //整个网页页面刷新
-          location.reload();  
+            resolve();          
           });
         } else {
           this.$notify.warning({
@@ -219,16 +228,18 @@ export default {
 
     //上传文件之前的钩子
     beforeUpload(file) {
-      this.fileObjs = file;  //获取文件对象
+      console.log(file,"想获取的文件对象11");
+      //this.fileObjs = file;  //获取文件对象
+      
     },
 
     //选取完后 上传成功/失败后触发
     imgSaveToUrl(file) {
       //图片本地预览方法
-      //const files =this.$refs.file.files[0];
+       // 获取上传的文件对象
+        this.fileObjs = file.raw;  //.raw是关键！
       let URL = window.URL || window.webkitURL;  //本地路径  
       this.createForm.photo = URL.createObjectURL(file.raw);
-     // console.log(URL.createObjectURL(file.raw), "本地路径");
     },
     
     //页面导航数
@@ -254,7 +265,7 @@ export default {
         .find()
         .then(res => {
           this.tableData = res.data.objects;
-          console.log(this.tableData, "图片");
+          //console.log(this.tableData, "图片");
         });
 
       //查询文件的总条数

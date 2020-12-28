@@ -85,20 +85,16 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const auth = to.meta && to.meta.auth //将要跳转的页面
     if (auth) {
-        console.log(111111111111)
         let win = window.sessionStorage
         if (win.getItem("nickname")) {
            // next({ path: "/index" });  //不起作用？
            next()
-            console.log(222222)
         } else {
-            console.log(3333333)
             Vue.prototype.$message.success("-请先登录-")
             next({ path: "/login" })
         }
     } else {
         next()
-        console.log(444444444)
     }
 })
 
