@@ -226,13 +226,6 @@ export default {
       });
     },
 
-    //上传文件之前的钩子
-    beforeUpload(file) {
-      console.log(file,"想获取的文件对象11");
-      //this.fileObjs = file;  //获取文件对象
-      
-    },
-
     //选取完后 上传成功/失败后触发
     imgSaveToUrl(file) {
       //图片本地预览方法
@@ -257,7 +250,7 @@ export default {
       let MyFile = new BaaS.File();
       let query = new BaaS.Query();
       //查询某一文件分类下的所有文件
-      query.compare("category_name", "=", "home_carousel");
+        
       //分页查询
       MyFile.setQuery(query)
         .limit(this.pageSize)

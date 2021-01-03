@@ -68,9 +68,9 @@ export default {
             username:this.loginForm.username,
             password:this.loginForm.password
             })
-              //获取账号和密码放在本地缓存
-           sessionStorage.setItem('username',this.loginForm.username)
-           sessionStorage.setItem('password',this.loginForm.password)
+          //     //获取账号和密码放在本地缓存
+          //  sessionStorage.setItem('username',this.loginForm.username)
+          //  sessionStorage.setItem('password',this.loginForm.password)
             setTimeout(()=>{this.$router.replace("/index");},2000)
         
          
@@ -84,6 +84,10 @@ export default {
 </script>
 
 <style>
+/* body{
+  background:url("../../assets/img/background2.svg") no-repeat center 0px;
+  background-size: cover;
+} */
 .login-container {
   width: 70%;
   height: 70%;

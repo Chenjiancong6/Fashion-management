@@ -26,6 +26,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import { setItem, getItem } from "@/components/storage" //封装缓存的方法
 export default {
    name:'LayoutHeader',
     props:{
@@ -53,9 +54,8 @@ export default {
  },
  created(){
     //获取用户登录昵称和头像
-      let win = window.sessionStorage;
-      this.nickname = win.getItem("nickname")
-      this.avatar = win.getItem("avatar")  
+      this.nickname = getItem("nickname_management")
+      this.avatar = getItem("avatar_management")  
  }
 }
 </script>

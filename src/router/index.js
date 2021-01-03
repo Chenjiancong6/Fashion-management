@@ -1,13 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+import { setItem, getItem } from "@/components/storage" //封装缓存的方法
 Vue.use(VueRouter);
 
 const home = () => import("@/views/home/Home");
 const Default =()=>import("@/views/default/default")
 const detail =()=>import("@/views/detail/Detail")
 const login = () => import("@/views/account/login");
-const LayoutIndex = () => import("@/components/layout/")
+const LayoutIndex = () => import("@/components/layout/")  //总页面导航
 
 const carousel =()=>import("@/views/home/carousel");  //轮播图
 
@@ -85,8 +85,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const auth = to.meta && to.meta.auth //将要跳转的页面
     if (auth) {
-        let win = window.sessionStorage
-        if (win.getItem("nickname")) {
+         //先判断是否有登录缓存
+        if (getItem("user_management")) {
            // next({ path: "/index" });  //不起作用？
            next()
         } else {
