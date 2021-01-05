@@ -1,8 +1,6 @@
 <template>
   <div class="home">
       潮流街APP后台管理系统
-
-  
   </div>
     
 </template>

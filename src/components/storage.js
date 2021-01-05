@@ -3,7 +3,7 @@
  */
 
 export const getItem = (name) => {
-    const data = window.localStorage.getItem(name);  //本地持久化存储
+    const data = window.sessionStorage.getItem(name);  //本地持久化存储
     try {
         return JSON.parse(data);  //如果是字符串，转为js对象
     } catch (err) {
@@ -16,9 +16,9 @@ export const setItem = (name, value) => {
     if (typeof value === 'object') {
         value = JSON.stringify(value)
     }
-    window.localStorage.setItem(name, value)
+    window.sessionStorage.setItem(name, value)
 }
 
 export const removeItem = (name) => {
-    window.localStorage.removeItem(name)
+    window.sessionStorage.removeItem(name)
 }
