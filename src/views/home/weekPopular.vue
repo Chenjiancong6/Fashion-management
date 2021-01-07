@@ -15,7 +15,7 @@
         width="500px"
         title="本周流行款"
       >
-        <el-form ref="createForm"  :model="createForm" label-position="top">
+        <el-form ref="createForm" :rules="rules" :model="createForm" label-position="top">
           <el-row>
             <el-col :span="12">
               <el-upload
@@ -56,26 +56,21 @@
       style="width: 100%"
       :default-sort="{prop: 'date', order: 'descending'}"
     >
-      <el-table-column prop="date" label="日期" sortable ></el-table-column>
-      <el-table-column prop="name" label="本周流行" sortable >
-         <template scope="scope">
-            <img :src="scope" width="60" height="60" alt="图片加载失败" />
-          </template>
+      <el-table-column prop="date" label="日期" sortable></el-table-column>
+      <el-table-column prop="name" label="本周流行" sortable>
+        <template scope="scope">
+          <img :src="scope" width="60" height="60" alt="图片加载失败" />
+        </template>
       </el-table-column>
-      <el-table-column  prop="address" label="流行名称" :formatter="formatter"></el-table-column>
-          <el-table-column prop="mime_type" label="操作">
-          <!-- 删除 -->
-          <template slot-scope="scope">
-            <el-button
-              icon="el-icon-delete"
-              type="danger"
-              circle
-              @click="handleDelete(scope.row.id)"
-            ></el-button>
-          </template>
-        </el-table-column>
+      <el-table-column prop="address" label="流行名称" :formatter="formatter"></el-table-column>
+      <el-table-column prop="mime_type" label="操作">
+        <!-- 删除 -->
+        <template slot-scope="scope">
+          <el-button icon="el-icon-delete" type="danger" circle @click="handleDelete(scope.row.id)"></el-button>
+        </template>
+      </el-table-column>
     </el-table>
-       <!-- 分页 -->
+    <!-- 分页 -->
     <el-row style="float:right; margin-top:20px">
       <el-pagination
         @current-change="handlePages"
@@ -89,39 +84,30 @@
 </template>
 
 <script>
+import BaaS from "@/api/cloud/init";
 export default {
   name: "weekPopular",
   data() {
     return {
-      //tableData: [], //表格参数
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
-      
-      
+      tableData: [], //表格参数
       addDialog: false,
-       tottalCount: 0, //页面数据的总条数
+      tottalCount: 0, //页面数据的总条数
       pageSize: 3, //每页显示多条数据
       fileObjs: "", //文件对象
       createForm: {
         name: "", //图片名
         photo: "" //图片
       },
-    
+      //表单验证
+      rules: {
+        name: [
+          {
+            required: true,
+            message: "图片名字不能为空",
+            trigger: "blur"
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -135,12 +121,36 @@ export default {
     },
 
     //删除
-    handleDelete(Id){
-
-    },
+    handleDelete(Id) {},
 
     //弹窗确认
-    handleCreate() {},
+    handleCreate(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let fileParams = {
+            filePath: this.createForm.photo,
+            fileObj: this.fileObjs //文件对象
+          };
+          let metaData = { categoryName: "week_popular" }; //指定上传的文件
+           //上传图片API接口
+          this.$cloudApi.upload(fileParams, metaData);
+          //上传图片名字API
+          let tableName = 'week_popular'; //表名
+          let name={name:this.createForm.name}  //上传的字段
+          this.$cloudApi.uploadName(tableName,name)
+          this.$refs.upload.submit();
+          this.addDialog = false;
+          //清空缓存
+          this.createForm = {
+            name: "", //图片名
+            photo: "" //图片
+          };
+        } else {
+          this.$notify.warning({ message: "上传失败" });
+          return false;
+        }
+      });
+    },
 
     //弹窗取消
     handleCancle() {
@@ -157,20 +167,20 @@ export default {
     },
 
     //分页导航条
-    handlePages(page){
-       this.showPages(page);
+    handlePages(page) {
+      this.showPages(page);
     },
 
     //分页函数
-    showPages(){},
+    showPages() {},
 
     //表格
     formatter(row, column) {
       return row.address;
     }
   },
-  created(){
-     this.showPages();
+  created() {
+    this.showPages();
   }
 };
 </script>
