@@ -1,7 +1,7 @@
 /**
  * 封装知晓云上传图片，图片名字等常用接口方法
  */
-import BaaS from "./init"
+import BaaS from "../cloud/init"
 import Vue from 'vue'
 
 //上传图片API函数

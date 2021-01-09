@@ -250,7 +250,7 @@ export default {
       let MyFile = new BaaS.File();
       let query = new BaaS.Query();
       //查询某一文件分类下的所有文件
-        
+       query.compare("category_name", "=", "home_carousel");
       //分页查询
       MyFile.setQuery(query)
         .limit(this.pageSize)
