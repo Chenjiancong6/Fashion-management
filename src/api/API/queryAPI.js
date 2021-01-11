@@ -11,6 +11,7 @@ export function queryImage(queryName){
     //查询某一文件分类下的所有文件
     query.compare("category_name", "=", queryName);
     MyFile.setQuery(query).find().then(res => {
+       // console.log(res.data.objects)
         //获取的值存储在vuex
         store.dispatch("home/getImage", res.data.objects)
     })
