@@ -4,13 +4,14 @@ import { setItem, getItem } from "@/components/storage" //封装缓存的方法
 Vue.use(VueRouter);
 
 const home = () => import("@/views/home/Home");
-const weekPopular = () => import("@/views/home/weekPopular");//本周流行
 const Default =()=>import("@/views/default/default")
 const detail =()=>import("@/views/detail/Detail")
 const login = () => import("@/views/account/login");
 const LayoutIndex = () => import("@/components/layout/")  //总页面导航
 
 const carousel =()=>import("@/views/home/carousel");  //轮播图
+const weekPopular = () => import("@/views/home/weekPopular");//本周流行
+const popular = () => import("@/views/home/popular")  //首页流行
 
 const routes = [
     {
@@ -66,6 +67,15 @@ const routes = [
                 component: weekPopular,
                 meta: {
                     title: '本周流行',
+                    auth: true
+                },
+            },
+            {
+                path: "/popular",  //首页流行
+                name: 'popular',
+                component: popular,
+                meta: {
+                    title: '流行',
                     auth: true
                 },
             }
