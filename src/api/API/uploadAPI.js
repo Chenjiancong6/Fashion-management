@@ -5,13 +5,20 @@ import BaaS from "../cloud/init"
 import Vue from 'vue'
 
 //上传图片API函数
-export function upload(fileParams, metaData){
+/**
+ * 
+ * @param {文件对象} fileParams 
+ * @param {指定上传的文件} metaData
+ * @param {存储的vuex缓存名} vuexName
+ */
+export function upload(fileParams, metaData,vuexName){
   return new Promise((resolve,reject)=>{
       let File = new BaaS.File();
       File.upload(fileParams, metaData).then(res=>{
+        console.log(res.data.file,"测试下拉")
           Vue.prototype.$message.success("上传成功");
           //整个网页页面刷新
-          location.reload();
+         location.reload();
       }).catch(err=>{
           Vue.prototype.$message.error("上传失败");
           return false;

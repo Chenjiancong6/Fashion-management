@@ -251,8 +251,9 @@ export default {
   },
   created() {
     this.showPages();
-    this.$cloudApi.queryImage("week_popular"); //赋值指定文件获取图片
-    this.$cloudApi.queryData("week_popular"); //赋值指定数据表获取图片名称
+    //参数1：上传的后台文件名； 参数2：存储的vuex缓存名
+    this.$cloudApi.queryImage("week_popular","home/getImage"); //赋值指定文件获取图片
+    this.$cloudApi.queryData("week_popular","home/getImageText"); //赋值指定数据表获取图片名称
   }
 };
 </script>

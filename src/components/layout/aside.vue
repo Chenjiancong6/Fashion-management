@@ -13,7 +13,7 @@
      <el-submenu index="/">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
-          <span index="/index">欢迎页</span>
+          <span index="/home">欢迎页</span>
         </template>
          </el-submenu>
     <!--  -->
@@ -26,7 +26,7 @@
           <el-menu-item index="/carousel">轮播图</el-menu-item>
           <el-menu-item index="/weekPopular">本周流行</el-menu-item>
            <el-menu-item index="/popular">流行</el-menu-item>
-           <el-menu-item index="1-4">选项4</el-menu-item>
+           <el-menu-item index="/home">选项4</el-menu-item>
            </el-menu-item-group>
       </el-submenu>
      <!--  -->
@@ -82,10 +82,10 @@ export default {
  },
    methods: {
       handleOpen(key, keyPath) {
-        console.log(key, keyPath);
+        //console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
-        console.log(key, keyPath);
+        //console.log(key, keyPath);
       }
     },
  props:{

@@ -111,7 +111,7 @@
             icon="el-icon-delete"
             type="danger"
             circle
-            @click="handleDelete(scope.row.id,scope.row.textId)"
+            @click="handleDelete(scope.row.id)"
           ></el-button>
         </template>
       </el-table-column>
@@ -159,6 +159,13 @@ export default {
     handleCreate(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+           let fileParams = {
+            filePath: this.createForm.photo,
+            fileObj: this.fileObjs //文件对象
+          };
+          let metaData = { categoryName: "home_popular" }; 
+          //上传图片API接口
+          this.$cloudApi.upload(fileParams, metaData);
           this.$refs.upload.submit();
           this.addDialog = false;
           //清空缓存
@@ -200,23 +207,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
-          //删除文件的图片
-          let MyFile = new BaaS.File();
-          MyFile.delete(id);
-          //删除数据表文字
-          //let tableName = "week_popular";
-          let Product = new BaaS.TableObject(tableName);
-          Product.delete(textId);
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
-          //整个网页页面刷新
-          location.reload();
-        })
-        .catch(() => {
+      }).then(() => {}).catch(() => {
           this.$message({
             type: "info",
             message: "已取消删除"
