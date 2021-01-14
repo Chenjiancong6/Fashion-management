@@ -246,7 +246,7 @@ export default {
     },
 
     //分页函数
-    showPages(page = 0) {
+     showPages(page = 0) {
       let MyFile = new BaaS.File();
       let query = new BaaS.Query();
       //查询某一文件分类下的所有文件
@@ -276,7 +276,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .tool-bar {
   padding: 0 0 20px 0;
   border-bottom: 1px solid rgb(195, 190, 190);

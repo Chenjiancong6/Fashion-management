@@ -3,7 +3,7 @@
  */
 import BaaS from "../cloud/init"
 import Vue from 'vue'
-
+import store from "@/store/index";  //引入vuex
 //上传图片API函数
 /**
  * 
@@ -16,9 +16,14 @@ export function upload(fileParams, metaData,vuexName){
       let File = new BaaS.File();
       File.upload(fileParams, metaData).then(res=>{
         console.log(res.data.file,"测试下拉")
+        //获取的值存储在vuex 
+        if (vuexName){
+          store.dispatch(vuexName, res.data.file)
+        }
+        
           Vue.prototype.$message.success("上传成功");
           //整个网页页面刷新
-         location.reload();
+        // location.reload();
       }).catch(err=>{
           Vue.prototype.$message.error("上传失败");
           return false;
@@ -26,7 +31,11 @@ export function upload(fileParams, metaData,vuexName){
   })
 }
 
-//上传图片的名字API
+/**
+ * 数据表存储数据
+ * @param {数据表名} tableName 
+ * @param {参数，可以是对象或者字符串 } value 
+ */
 export function uploadName(tableName,value){
   return  new Promise(()=>{
       let Product = new BaaS.TableObject(tableName) //向指定数据表插入一条记录

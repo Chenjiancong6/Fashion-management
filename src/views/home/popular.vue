@@ -165,19 +165,45 @@ export default {
           };
           let metaData = { categoryName: "home_popular" }; 
           //上传图片API接口
-          this.$cloudApi.upload(fileParams, metaData);
+           
+          this.$cloudApi.upload(fileParams, metaData,"home/getPopularImg");  
           this.$refs.upload.submit();
+          console.log(this.popularImg.path,"获取缓存图片")
+          //输入框输入的值
+          let param={
+            iid:this.popularImg.id,  //图片的id
+            photo:this.popularImg.path,  //图片的地址
+            price:this.createForm.price,
+            title: this.createForm.title,
+            sale: this.createForm.sale,
+            collection: this.createForm.collection,
+            shop: this.createForm.shop,
+            totalSale: this.createForm.totalSale,
+            totalShop: this.createForm.totalShop
+          }
+          console.log(param,"写入数据表API")
+          //写入数据表API
+          this.$cloudApi.uploadName("home_popular",param)  
           this.addDialog = false;
           //清空缓存
           this.createForm = {
-            name: "", //图片名
-            photo: "" //图片
+            photo: "", //图片
+             title: "",
+             price: "",
+             sale: "",
+             collection: "",
+             shop: "",
+             totalSale: "",
+             totalShop: ""
           };
         } else {
           this.$notify.warning({ message: "上传失败" });
           return false;
         }
+         //整个网页页面刷新
+        //location.reload();
       });
+      
     },
 
     //弹窗取消
@@ -219,6 +245,12 @@ export default {
     formatter(row, column) {
       return row.address;
     }
+  },
+   computed: {
+    //vuex缓存数据
+    ...mapGetters({
+      popularImg: "home/popularImg", //流行栏图片数据
+    })
   },
   created() {}
 };
