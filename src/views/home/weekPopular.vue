@@ -137,8 +137,8 @@ export default {
 
     //删除
     handleDelete(id,textId) {
-      console.log(id,"删除id")
-      console.log(textId,"删除文字id")
+      //console.log(id,"删除id")
+     // console.log(textId,"删除文字id")
       this.$confirm("确定要删除此图片吗？", "删除图片", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

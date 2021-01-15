@@ -30,7 +30,7 @@ export default {
  data(){
      return{
      tottalCount: 0, //页面数据的总条数
-      pageSize:4 , //每页显示多条数据
+      pageSize:5 , //每页显示多条数据
      }
  },
  methods:{
@@ -40,13 +40,17 @@ export default {
     },
 
     //分页函数
-    showPages(page = 0) {
-      let MyFile = new BaaS.File();
-      let query = new BaaS.Query();
-      //查询某一文件分类下的所有文件
-      query.compare("category_name", "=", this.queryName);
+    showPages(page = 0) {  
+      //查询某一文件表分类下的所有文件
+      //let MyFile = new BaaS.File();
+      //let query = new BaaS.Query();
+     // query.compare("category_name", "=", this.queryName);
+       
+       //查询数据表下具体表的所有数据
+    let query = new BaaS.Query()
+    let Product = new BaaS.TableObject(this.queryName)
       //分页查询
-      MyFile.setQuery(query)
+      Product.setQuery(query)
         .limit(this.pageSize)
         .offset(page)
         .find()
@@ -55,8 +59,8 @@ export default {
          this.$emit("pageData",res.data.objects)
         });
 
-      //查询文件的总条数
-      MyFile.setQuery(query)
+      //查询数据表的总条数
+      Product.setQuery(query)
         .count()
         .then(num => {
           this.tottalCount = num;

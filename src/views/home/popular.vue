@@ -26,9 +26,9 @@
                 :show-file-list="false"
                 :auto-upload="false"
               >
-                <img v-if="createForm.photo" :src="createForm.photo" class="avatar" />
+                <img v-if="createForm.path" :src="createForm.path" class="avatar" />
                 <el-button
-                  v-if="createForm.photo"
+                  v-if="createForm.path"
                   class="x-full"
                   size="mini"
                   type="primary"
@@ -101,7 +101,7 @@
       <el-table-column prop="shop" label="店铺名称"></el-table-column>
       <el-table-column prop="price" label="商品价格"></el-table-column>
       <el-table-column prop="sale" label="商品销量"></el-table-column>
-      <el-table-column prop="collect" label="收藏人数"></el-table-column>
+      <el-table-column prop="collection" label="收藏人数"></el-table-column>
       <el-table-column prop="totalSale" label="总销量"></el-table-column>
       <el-table-column prop="totalShop" label="店铺总商品量"></el-table-column>
       <el-table-column prop="mime_type" label="操作">
@@ -130,12 +130,14 @@ export default {
   components: { pagination },
   data() {
     return {
-      queryNAME: "week_popular", //数据库要查询的文件名
+      queryNAME: "home_popular", //数据库要查询的文件名
       tableData: [], //表格参数
       addDialog: false,
       fileObjs: "", //文件对象
+      path:'',  //图片
+      iid:'',  //图片的id
       createForm: {
-        photo: "", //图片
+        path: "", //图片
         title: "",
         price: "",
         sale: "",
@@ -147,6 +149,7 @@ export default {
     };
   },
   methods: {
+   
     //刷新
     handleRefresh() {
       location.reload(); //整个网页页面刷新
@@ -157,22 +160,18 @@ export default {
     },
     //弹窗确认
     handleCreate(formName) {
+       const that=this;
+       console.log(that)
       this.$refs[formName].validate(valid => {
         if (valid) {
            let fileParams = {
-            filePath: this.createForm.photo,
+            filePath: this.createForm.path,
             fileObj: this.fileObjs //文件对象
           };
           let metaData = { categoryName: "home_popular" }; 
           //上传图片API接口
-           
-          this.$cloudApi.upload(fileParams, metaData,"home/getPopularImg");  
-          this.$refs.upload.submit();
-          console.log(this.popularImg.path,"获取缓存图片")
-          //输入框输入的值
-          let param={
-            iid:this.popularImg.id,  //图片的id
-            photo:this.popularImg.path,  //图片的地址
+             //输入框输入的值
+          const param={
             price:this.createForm.price,
             title: this.createForm.title,
             sale: this.createForm.sale,
@@ -181,13 +180,27 @@ export default {
             totalSale: this.createForm.totalSale,
             totalShop: this.createForm.totalShop
           }
-          console.log(param,"写入数据表API")
-          //写入数据表API
-          this.$cloudApi.uploadName("home_popular",param)  
+
+       /**
+        * 1.先执行上传图片到文件表的请求
+        * 2.在上传文件表后，在then()内部执行上传数据表的请求
+        */
+      let File = new BaaS.File();
+      File.upload(fileParams, metaData).then(res=>{       
+            this.$refs.upload.submit();
+          param.iid=res.data.file.id;//图片的id
+          param.path=res.data.file.path,  //图片的地址
+          //写入数据表API  
+          that.$cloudApi.uploadName("home_popular",param) 
+          this.$message.success("上传成功");         
+      }).catch(err=>{
+         this.$message.error("上传失败");
+          return false;
+      })
           this.addDialog = false;
           //清空缓存
           this.createForm = {
-            photo: "", //图片
+            path: "", //图片
              title: "",
              price: "",
              sale: "",
@@ -199,11 +212,10 @@ export default {
         } else {
           this.$notify.warning({ message: "上传失败" });
           return false;
-        }
-         //整个网页页面刷新
-        //location.reload();
+        }     
       });
-      
+      //  //整个网页页面刷新
+      //   location.reload(); 
     },
 
     //弹窗取消
@@ -217,7 +229,7 @@ export default {
       // 获取上传的文件对象
       this.fileObjs = file.raw; //.raw是关键！
       let URL = window.URL || window.webkitURL; //本地路径
-      this.createForm.photo = URL.createObjectURL(file.raw);
+      this.createForm.path = URL.createObjectURL(file.raw);
     },
 
     /**
@@ -233,7 +245,13 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {}).catch(() => {
+      }).then(() => {
+        this.$cloudApi.deleteTable("home_popular",id)
+         this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+      }).catch(() => {
           this.$message({
             type: "info",
             message: "已取消删除"
