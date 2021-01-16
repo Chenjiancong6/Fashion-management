@@ -5,8 +5,7 @@
     </el-aside>
   <el-container>
     <el-header>
-      <app-header :is-collapse="isCollapse"  @click.native="isCollapse=!isCollapse">
-      </app-header>
+      <app-header :is-collapse="isCollapse"  @click.native="isCollapse=!isCollapse"></app-header>
     </el-header>
     <el-main>
       <!-- 嵌套路由 -->
@@ -17,8 +16,8 @@
 </template>
 
 <script>
-import AppAside from "./aside";
-import AppHeader from "./header";
+import AppAside from "./aside";  //左边侧边栏
+import AppHeader from "./header"; //顶部
 export default {
    name:'LayoutIndex',
    components:{ AppAside, AppHeader },

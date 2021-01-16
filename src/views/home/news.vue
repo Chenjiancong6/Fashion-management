@@ -1,6 +1,6 @@
-<!--首页流行栏-->
+<!--首页新款栏-->
 <template>
-  <div id="popular">
+  <div id="news">
     <!--tool-->
     <el-row class="tool-bar">
       <el-button size="mini" type="primary" icon="el-icon-refresh" plain @click="handleRefresh">刷新</el-button>
@@ -126,11 +126,11 @@ import BaaS from "@/api/cloud/init";
 import pagination from "@/components/common/pagination"; //分页
 import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
-  name: "popular",
+  name: "news",
   components: { pagination },
   data() {
     return {
-      queryNAME: "home_popular", //数据库要查询的文件名
+      queryNAME: "home_news", //数据库要查询的文件名
       tableData: [], //表格参数
       addDialog: false,
       fileObjs: "", //文件对象
@@ -166,7 +166,7 @@ export default {
             filePath: this.createForm.path,
             fileObj: this.fileObjs //文件对象
           };
-          let metaData = { categoryName: "home_popular" }; 
+          let metaData = { categoryName: "home_news" }; 
           //上传图片API接口
              //输入框输入的值
           const param={
@@ -189,7 +189,7 @@ export default {
           param.iid=res.data.file.id;//图片的id
           param.path=res.data.file.path,  //图片的地址
           //写入数据表API  
-          that.$cloudApi.uploadName("home_popular",param) 
+          that.$cloudApi.uploadName("home_news",param) 
           this.$message.success("上传成功");         
       }).catch(err=>{
          this.$message.error("上传失败");
@@ -244,7 +244,8 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.$cloudApi.deleteTable("home_popular",id)
+         //删除数据表API
+        this.$cloudApi.deleteTable("home_news",id)
          this.$message({
             type: "success",
             message: "删除成功!"

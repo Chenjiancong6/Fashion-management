@@ -11,7 +11,9 @@ const LayoutIndex = () => import("@/components/layout/")  //总页面导航
 
 const carousel =()=>import("@/views/home/carousel");  //轮播图
 const weekPopular = () => import("@/views/home/weekPopular");//本周流行
-const popular = () => import("@/views/home/popular")  //首页流行
+const popular = () => import("@/views/home/popular")  //首页流行栏
+const news = () => import("@/views/home/news")  //首页新款栏
+const sell = () => import("@/views/home/sell")  //首页精选栏
 
 const routes = [
     {
@@ -71,14 +73,32 @@ const routes = [
                 },
             },
             {
-                path: "/popular",  //首页流行
+                path: "/popular",  //首页流行栏
                 name: 'popular',
                 component: popular,
                 meta: {
                     title: '流行',
                     auth: true
                 },
-            }
+            },
+            {
+                path: "/news",  //首页新款栏
+                name: 'news',
+                component: news,
+                meta: {
+                    title: '新款',
+                    auth: true
+                },
+            },
+            {
+                path: "/sell",  //首页精选栏
+                name: 'sell',
+                component: sell,
+                meta: {
+                    title: '精选',
+                    auth: true
+                },
+            },
         ]
     },
 

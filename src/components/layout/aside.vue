@@ -25,8 +25,9 @@
         <el-menu-item-group>
           <el-menu-item index="/carousel">轮播图</el-menu-item>
           <el-menu-item index="/weekPopular">本周流行</el-menu-item>
-           <el-menu-item index="/popular">流行</el-menu-item>
-           <el-menu-item index="/home">选项4</el-menu-item>
+           <el-menu-item index="/popular">流行栏</el-menu-item>
+           <el-menu-item index="/news">新款栏</el-menu-item>
+             <el-menu-item index="/sell">精选栏</el-menu-item>
            </el-menu-item-group>
       </el-submenu>
      <!--  -->
