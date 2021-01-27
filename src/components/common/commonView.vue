@@ -1,4 +1,6 @@
-<!--首页流行栏-->
+/**
+**创建一个公共的显示页面组件 （首页之前没有进行组件封装）
+ */
 <template>
   <div id="popular">
     <!--tool-->
@@ -117,7 +119,7 @@
       </el-table-column>
     </el-table>
     <!--封装的分页组件-->
-    <pagination :query-name="queryNAME" @pageData="pageData"></pagination>
+    <pagination :query-name="APIData" @pageData="pageData"></pagination>
   </div>
 </template> 
 
@@ -128,9 +130,17 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "popular",
   components: { pagination },
+  //接收父组件传递过来的数据
+  props:{
+      APIData:{
+          type:String,
+          default(){
+              return ''
+          }
+      }
+  },
   data() {
     return {
-      queryNAME: "home_popular", //数据库要查询的文件名
       tableData: [], //表格参数
       addDialog: false,
       fileObjs: "", //文件对象
@@ -166,7 +176,7 @@ export default {
             filePath: this.createForm.path,
             fileObj: this.fileObjs //文件对象
           };
-          let metaData = { categoryName: "home_popular" }; 
+          let metaData = { categoryName: this.APIData }; 
           //上传图片API接口
              //输入框输入的值
           const param={
@@ -189,7 +199,7 @@ export default {
           param.iid=res.data.file.id;//图片的id
           param.path=res.data.file.path,  //图片的地址
           //2.写入数据表API  
-          that.$cloudApi.uploadName("home_popular",param) 
+          that.$cloudApi.uploadName(this.APIData,param) 
           this.$message.success("上传成功");         
       }).catch(err=>{
          this.$message.error("上传失败");
@@ -244,7 +254,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.$cloudApi.deleteTable("home_popular",id)
+        this.$cloudApi.deleteTable(this.APIData,id)
          this.$message({
             type: "success",
             message: "删除成功!"

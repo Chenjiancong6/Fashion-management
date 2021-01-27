@@ -15,7 +15,7 @@ export function upload(fileParams, metaData,vuexName){
   return new Promise((resolve,reject)=>{
       let File = new BaaS.File();
       File.upload(fileParams, metaData).then(res=>{
-        console.log(res.data.file,"测试下拉")
+        //console.log(res.data.file,"测试下拉")
         //获取的值存储在vuex 
         if (vuexName){
           store.dispatch(vuexName, res.data.file)

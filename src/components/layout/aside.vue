@@ -37,10 +37,16 @@
           <span>分类页</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
-           <el-menu-item index="1-3">选项3</el-menu-item>
-           <el-menu-item index="1-4">选项1</el-menu-item>
+          <el-menu-item index="/category_popular">正在流行</el-menu-item>
+          <el-menu-item index="/category_superMarket">哈克超市</el-menu-item>
+           <el-menu-item index="/category_manWear">男装</el-menu-item>
+           <el-menu-item index="/category_digital">数码</el-menu-item>
+           <el-menu-item index="/category_phone">手机</el-menu-item>
+           <el-menu-item index="/category_shoes">潮鞋</el-menu-item>
+           <el-menu-item index="/category_model">手办模型</el-menu-item>
+           <el-menu-item index="/category_books">图书文娱</el-menu-item>
+           <el-menu-item index="/category_sports">运动户外</el-menu-item>
+           <el-menu-item index="/category_skin">男生护肤</el-menu-item>
            </el-menu-item-group>
       </el-submenu>
       <!--  -->

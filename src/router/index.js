@@ -15,6 +15,19 @@ const popular = () => import("@/views/home/popular")  //首页流行栏
 const news = () => import("@/views/home/news")  //首页新款栏
 const sell = () => import("@/views/home/sell")  //首页精选栏
 
+//以下是分类页下的10个路由
+const category_popular =()  =>import("@/views/category/popular")
+const category_superMarket = () => import("@/views/category/superMarket")
+const category_manWear = () => import("@/views/category/manWear")
+const category_digital = () => import("@/views/category/digital")
+const category_phone = () => import("@/views/category/phone")
+const category_shoes = () => import("@/views/category/shoes")
+const category_model = () => import("@/views/category/model")
+const category_books = () => import("@/views/category/books")
+const category_sports = () => import("@/views/category/books")
+const category_skin = () => import("@/views/category/skin")
+
+
 const routes = [
     {
         path: '/',  
@@ -96,6 +109,98 @@ const routes = [
                 component: sell,
                 meta: {
                     title: '精选',
+                    auth: true
+                },
+            },
+
+            //以下10个路由是分类页下的路由
+            {
+                path: "/category_popular",  
+                name: 'category_popular',
+                component: category_popular,
+                meta: {
+                    title: '正在流行',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_superMarket",
+                name: 'category_superMarket',
+                component: category_superMarket,
+                meta: {
+                    title: '哈克超市',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_manWear",
+                name: 'category_manWear',
+                component: category_manWear,
+                meta: {
+                    title: '男装',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_digital",
+                name: 'category_digital',
+                component: category_digital,
+                meta: {
+                    title: '数码',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_shoes",
+                name: 'category_shoes',
+                component: category_shoes,
+                meta: {
+                    title: '潮鞋',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_model",
+                name: 'category_model',
+                component: category_model,
+                meta: {
+                    title: '手办模型',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_books",
+                name: 'category_books',
+                component: category_books,
+                meta: {
+                    title: '图书文娱',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_sports",
+                name: 'category_sports',
+                component: category_sports,
+                meta: {
+                    title: '运动户外',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_phone",
+                name: 'category_phone',
+                component: category_phone,
+                meta: {
+                    title: '手机',
+                    auth: true
+                },
+            },
+            {
+                path: "/category_skin",
+                name: 'category_skin',
+                component: category_skin,
+                meta: {
+                    title: '美妆护肤',
                     auth: true
                 },
             },
