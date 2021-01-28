@@ -8,7 +8,7 @@
 <script>
 import commonView from "@/components/common/commonView";
 export default {
-  name: "poplar",
+  name: "books",
   components: { commonView },
   data() {
     return {
