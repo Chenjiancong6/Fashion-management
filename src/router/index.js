@@ -24,7 +24,7 @@ const category_phone = () => import("@/views/category/phone")
 const category_shoes = () => import("@/views/category/shoes")
 const category_model = () => import("@/views/category/model")
 const category_books = () => import("@/views/category/books")
-const category_sports = () => import("@/views/category/books")
+const category_sports = () => import("@/views/category/sports")
 const category_skin = () => import("@/views/category/skin")
 
 
