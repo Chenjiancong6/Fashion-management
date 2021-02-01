@@ -7,9 +7,9 @@ import store from "@/store/index";  //引入vuex
 //上传图片API函数
 /**
  * 
- * @param {文件对象} fileParams 
- * @param {指定上传的文件} metaData
- * @param {存储的vuex缓存名} vuexName
+ * @param { 文件对象 } fileParams 
+ * @param { 指定上传的文件 } metaData
+ * @param { 存储的vuex缓存名 } vuexName
  */
 export function upload(fileParams, metaData,vuexName){
   return new Promise((resolve,reject)=>{
@@ -33,8 +33,8 @@ export function upload(fileParams, metaData,vuexName){
 
 /**
  * 数据表存储数据
- * @param {数据表名} tableName 
- * @param {参数，可以是对象或者字符串 } value 
+ * @param { 数据表名 } tableName 
+ * @param { 参数，可以是对象或者字符串 } value 
  */
 export function uploadName(tableName,value){
   return  new Promise(()=>{
