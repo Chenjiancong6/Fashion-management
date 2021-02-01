@@ -30,7 +30,7 @@ export default {
  data(){
      return{
      tottalCount: 0, //页面数据的总条数
-      pageSize:5 , //每页显示多条数据
+      pageSize: 4, //每页显示多条数据
      }
  },
  methods:{

@@ -14,6 +14,8 @@ const weekPopular = () => import("@/views/home/weekPopular");//本周流行
 const popular = () => import("@/views/home/popular")  //首页流行栏
 const news = () => import("@/views/home/news")  //首页新款栏
 const sell = () => import("@/views/home/sell")  //首页精选栏
+const showCart=()=>import("@/views/shopCart/showCart")  //购物车
+const showUser =()=>import("@/views/profile/showUser")  //展示所有用户信息
 
 //以下是分类页下的10个路由
 const category_popular =()  =>import("@/views/category/popular")
@@ -109,6 +111,24 @@ const routes = [
                 component: sell,
                 meta: {
                     title: '精选',
+                    auth: true
+                },
+            },
+            {
+                path: "/showCart",
+                name: 'showCart',
+                component: showCart,
+                meta: {
+                    title: '购物车数量',
+                    auth: true
+                },
+            },
+            {
+                path: "/showUser",
+                name: 'showUser',
+                component: showUser,
+                meta: {
+                    title: '登录用户信息',
                     auth: true
                 },
             },
@@ -230,10 +250,12 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const auth = to.meta && to.meta.auth //将要跳转的页面
     if (auth) {
+       document.title = "潮流街APP后台管理系统"
          //先判断是否有登录缓存
         if (getItem("user_management")) {
            // next({ path: "/index" });  //不起作用？
            next()
+            
         } else {
             Vue.prototype.$message.success("-请先登录-")
             next({ path: "/login" })

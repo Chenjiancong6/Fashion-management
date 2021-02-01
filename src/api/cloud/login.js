@@ -7,7 +7,6 @@ import store from "@/store/index";  //引入vuex
  */
 
 function login(form) {
-    return new Promise((resolve, reject) => {
         BaaS.auth.login(form).then(user => {
             store.commit("setNickName", user.nickname)//登录名
             store.commit("setAvatar", user.avatar)//登录头像
@@ -16,7 +15,6 @@ function login(form) {
         }).catch(err => {
             Vue.prototype.$message.error("登录失败");
         })
-    })
 }
 
 export default login

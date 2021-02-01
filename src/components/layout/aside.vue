@@ -10,10 +10,10 @@
       @open="handleOpen"
       @close="handleClose">
     <!--  -->
-     <el-submenu index="/">
+     <el-submenu index="/index">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
-          <span index="/home">欢迎页</span>
+          <span index="/index">欢迎页</span>
         </template>
          </el-submenu>
     <!--  -->
@@ -52,27 +52,21 @@
       <!--  -->
        <el-submenu index="3">
         <template slot="title">
-          <i class="el-icon-loading"></i>
-          <span>详情页</span>
+          <i class="el-icon-shopping-cart-2"></i>
+          <span>购物车</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
-           <el-menu-item index="1-3">选项3</el-menu-item>
-           <el-menu-item index="1-4">选项1</el-menu-item>
+          <el-menu-item index="/showCart">商品数量</el-menu-item>
            </el-menu-item-group>
       </el-submenu>
       <!--  -->
        <el-submenu index="4">
         <template slot="title">
-          <i class="el-icon-shopping-cart-2"></i>
+          <i class="el-icon-loading"></i>
           <span>个人中心</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="1-1">选项1</el-menu-item>
-          <el-menu-item index="1-2">选项2</el-menu-item>
-           <el-menu-item index="1-3">选项3</el-menu-item>
-           <el-menu-item index="1-4">选项1</el-menu-item>
+          <el-menu-item index="/showUser">注册用户</el-menu-item>
            </el-menu-item-group>
       </el-submenu>
     </el-menu>
