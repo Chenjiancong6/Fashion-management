@@ -15,7 +15,7 @@ export function upload(fileParams, metaData,vuexName){
   return new Promise((resolve,reject)=>{
       let File = new BaaS.File();
       File.upload(fileParams, metaData).then(res=>{
-        //console.log(res.data.file,"测试下拉")
+       // console.log(res.data.file,"测试下拉")
         //获取的值存储在vuex 
         if (vuexName){
           store.dispatch(vuexName, res.data.file)
@@ -39,8 +39,13 @@ export function upload(fileParams, metaData,vuexName){
 export function uploadName(tableName,value){
   return  new Promise(()=>{
       let Product = new BaaS.TableObject(tableName) //向指定数据表插入一条记录
-      let product = Product.create()  //创造
-      product.set(value).save()  //保存
+     //创造
+      let product = Product.create()
+      //保存
+      product.set(value).save().then(res=>{
+        console.log(res,1234);
+        
+      })    
     })
 }
 

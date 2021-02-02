@@ -169,7 +169,7 @@ export default {
     //弹窗确认
     handleCreate(formName) {
        const that=this;
-       console.log(that)
+      // console.log(that)
       this.$refs[formName].validate(valid => {
         if (valid) {
            let fileParams = {

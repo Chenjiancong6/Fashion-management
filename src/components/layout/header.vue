@@ -15,9 +15,11 @@
               <span>{{nickname}}</span>
               <i style="margin-left:20px" class="el-icon-loading  el-icon--right"></i>
             </div>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu slot="dropdown" >
               <el-dropdown-item>设置</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+             <div @click="clickLogout">
+              <el-dropdown-item >退出</el-dropdown-item>
+              </div>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -26,7 +28,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import { setItem, getItem } from "@/components/storage" //封装缓存的方法
+import { setItem, getItem,removeItem } from "@/components/storage" //封装缓存的方法
 export default {
    name:'LayoutHeader',
     props:{
@@ -45,6 +47,12 @@ export default {
     ...mapActions({
       getNickName:'header/getNickName'
     }),
+    clickLogout(){
+      removeItem("user_management")
+       removeItem("nickname_management")
+      removeItem("avatar_management")
+      this.$router.push({path:'/login'})
+    }
       
  },
  computed:{
@@ -71,7 +79,5 @@ export default {
   display: flex;
   align-items: center;
 }
-
-
 
 </style>

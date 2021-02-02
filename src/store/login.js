@@ -22,8 +22,7 @@ const actions={
     getLogin({commit},from){
       return new Promise((resolve, reject) => {
              BaaS.auth.login(form).then(user => {
-                console.log(user.avatar, 1123);
-
+              //  console.log(user.avatar, 1123);
                 sessionStorage.setItem("nickname", user.nickname) //登录名
                 sessionStorage.setItem("avatar", user.avatar)
                 Vue.prototype.$message.success("登录成功");
