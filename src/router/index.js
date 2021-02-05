@@ -257,7 +257,7 @@ router.beforeEach((to, from, next) => {
            next()
             
         } else {
-            Vue.prototype.$message.success("-请先登录-")
+           // Vue.prototype.$message.success("-请先登录-")
             next({ path: "/login" })
         }
     } else {

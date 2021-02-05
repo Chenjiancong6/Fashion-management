@@ -4,7 +4,7 @@
         <i :class="{'el-icon-s-fold':isCollapse,
         'el-icon-s-unfold':!isCollapse}">
         </i>
-        <!-- <span>潮流街APP后台管理系统</span>  -->
+        <span class="header_title">潮流街APP后台管理系统</span> 
        </div>
         <div>
           <el-dropdown>
@@ -79,5 +79,7 @@ export default {
   display: flex;
   align-items: center;
 }
-
+.header_title{
+  margin-left: 10px;
+}
 </style>
