@@ -13,7 +13,7 @@ function login(form) {
             store.commit('setUser', user._username)  //把获取的token登录凭证放到vuex中存储
             Vue.prototype.$message.success("登录成功");
         }).catch(err => {
-            Vue.prototype.$message.error("登录失败");
+            Vue.prototype.$message.error("账号或密码错误,请重试");
         })
 }
 

@@ -17,7 +17,7 @@
             </div>
             <el-dropdown-menu slot="dropdown" >
               <el-dropdown-item>设置</el-dropdown-item>
-             <div @click="clickLogout">
+             <div @click="clickLogout"> 
               <el-dropdown-item >退出</el-dropdown-item>
               </div>
             </el-dropdown-menu>
